@@ -26,7 +26,7 @@ jobs:
         if: ${{ contains(matrix.container, 'suse') && matrix.python == '3.11' }}
       - run: zypper -n install python310 python310-pip python310-devel
         if: ${{ contains(matrix.container, 'suse') && matrix.python == '3.10' }}
-      - run: python${{ matrix.python }} -m  install pyperformance
+      - run: python${{ matrix.python }} -m pip install pyperformance
       - run: pyperformance run --python=/usr/bin/python${{ matrix.python }} -o ${{ matrix.container }}-${{ matrix.python }}.json -f
 
       - name: Archive pyperformance results
