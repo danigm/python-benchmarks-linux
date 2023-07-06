@@ -1,0 +1,36 @@
+name: benchmakrs
+run-name: Python 3.11 benchmarks
+on: [push]
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python: ['3.10']
+        container:
+          - 'registry.suse.com/bci/bci-base:15.4'
+          - 'registry.opensuse.org/opensuse/tumbleweed:latest'
+        include:
+          - container: 'registry.opensuse.org/opensuse/tumbleweed:latest'
+            python: '3.11'
+          - container: 'registry.suse.com/bci/bci-base:15.5'
+            python: '3.11'
+
+    container:
+      image: ${{ matrix.container }}
+
+    steps:
+      - run: zypper -n install gcc
+      - run: zypper -n install python311 python311-pip python311-devel
+        if: ${{ contains(matrix.container, 'suse') && matrix.pytohn == '3.11' }}
+      - run: zypper -n install python310 python310-pip python310-devel
+        if: ${{ contains(matrix.container, 'suse') && matrix.pytohn == '3.10' }}
+      - run: python${{ matrix.python }} -m  install pyperformance
+      - run: pyperformance run --python=/usr/bin/python${{ matrix.python }} -o ${{ matrix.container }}-${{ matrix.python }}.json -f
+
+      - name: Archive pyperformance results
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.container }}-${{ matrix.python }}
+          path: ${{ matrix.container }}-${{ matrix.python }}.json
