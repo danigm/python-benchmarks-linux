@@ -23,9 +23,9 @@ jobs:
     steps:
       - run: zypper -n install gcc
       - run: zypper -n install python311 python311-pip python311-devel
-        if: ${{ contains(matrix.container, 'suse') && matrix.pytohn == '3.11' }}
+        if: ${{ contains(matrix.container, 'suse') && matrix.python == '3.11' }}
       - run: zypper -n install python310 python310-pip python310-devel
-        if: ${{ contains(matrix.container, 'suse') && matrix.pytohn == '3.10' }}
+        if: ${{ contains(matrix.container, 'suse') && matrix.python == '3.10' }}
       - run: python${{ matrix.python }} -m  install pyperformance
       - run: pyperformance run --python=/usr/bin/python${{ matrix.python }} -o ${{ matrix.container }}-${{ matrix.python }}.json -f
 
