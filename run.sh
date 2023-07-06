@@ -32,12 +32,11 @@ mkdir -p out
 
 if [ $CONTAINER == "all" ]
 then
-    podman run --rm -ti -v out:/out:z python-benchmark-tw
     for i in Containerfile*
     do
         NAME=${i:14}
-        podman run --rm -ti -v out:/out:z python-benchmark-$NAME
+        podman run --rm -ti -v $PWD/out:/out:z python-benchmark-$NAME
     done
 else
-    podman run --rm -ti -v out:/out:z python-benchmark-$CONTAINER
+    podman run --rm -ti -v $PWD/out:/out:z python-benchmark-$CONTAINER
 fi

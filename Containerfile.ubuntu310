@@ -1,0 +1,18 @@
+FROM ubuntu:22.04
+
+ENV IMAGE ubuntu22.04
+ENV PYTHON_VERSION python3
+ENV PYTHON python3
+
+ENV PACKAGES="$PYTHON_VERSION $PYTHON_VERSION-pip $PYTHON_VERSION-venv $PYTHON_VERSION-dev build-essential"
+RUN apt update -y
+RUN apt install -y $PACKAGES
+
+RUN $PYTHON -m venv /venv
+ENV PATH="/venv/bin:$PATH"
+
+RUN $PYTHON -m pip install pyperformance
+
+COPY benchmark.sh /benchmark.sh
+
+CMD ["/benchmark.sh"]

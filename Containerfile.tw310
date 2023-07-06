@@ -14,4 +14,4 @@ RUN $PYTHON -m pip install pyperformance
 
 COPY benchmark.sh /benchmark.sh
 
-CMD ["/benchmark.sh", "$PYTHON", "$IMAGE-$PYTHON_VERSION"]
+CMD ["/benchmark.sh"]
