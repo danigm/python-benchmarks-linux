@@ -1,0 +1,17 @@
+FROM tumbleweed
+
+ENV IMAGE tumbleweed
+ENV PYTHON_VERSION python311
+ENV PYTHON python3.11
+
+RUN zypper --non-interactive install --no-recommends $PYTHON_VERSION
+RUN zypper --non-interactive install --no-recommends $PYTHON_VERSION-pip
+
+RUN $PYTHON -m venv /venv
+ENV PATH="/venv/bin:$PATH"
+
+RUN $PYTHON -m pip install pyperformance
+
+COPY benchmark.sh /benchmark.sh
+
+CMD ["/benchmark.sh", "$PYTHON", "$IMAGE-$PYTHON"]
