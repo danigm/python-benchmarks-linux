@@ -1,0 +1,17 @@
+FROM registry.suse.com/bci/bci-base:15.5
+
+ENV IMAGE bci-15.5
+ENV PYTHON_VERSION python311
+ENV PYTHON python3.11
+
+ENV PACKAGES="$PYTHON_VERSION $PYTHON_VERSION-pip $PYTHON_VERSION-devel gcc"
+RUN zypper --non-interactive install --no-recommends $PACKAGES
+
+RUN $PYTHON -m venv /venv
+ENV PATH="/venv/bin:$PATH"
+
+RUN $PYTHON -m pip install pyperformance
+
+COPY benchmark.sh /benchmark.sh
+
+CMD ["/benchmark.sh", "$PYTHON", "$IMAGE-$PYTHON_VERSION"]

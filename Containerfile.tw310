@@ -1,0 +1,17 @@
+FROM tumbleweed
+
+ENV IMAGE tumbleweed
+ENV PYTHON_VERSION python310
+ENV PYTHON python3.10
+
+ENV PACKAGES="$PYTHON_VERSION $PYTHON_VERSION-pip $PYTHON_VERSION-devel gcc"
+RUN zypper --non-interactive install --no-recommends $PACKAGES
+
+RUN $PYTHON -m venv /venv
+ENV PATH="/venv/bin:$PATH"
+
+RUN $PYTHON -m pip install pyperformance
+
+COPY benchmark.sh /benchmark.sh
+
+CMD ["/benchmark.sh", "$PYTHON", "$IMAGE-$PYTHON_VERSION"]
