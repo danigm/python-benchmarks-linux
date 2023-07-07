@@ -5,7 +5,7 @@ ENV PYTHON_VERSION python310
 ENV PYTHON python3.10
 
 ENV PACKAGES="$PYTHON_VERSION $PYTHON_VERSION-pip $PYTHON_VERSION-devel"
-RUN zypper --non-interactive install --recommends devel_basis
+RUN zypper --non-interactive install --recommends -t pattern devel_basis
 RUN zypper --non-interactive install --no-recommends $PACKAGES
 
 RUN $PYTHON -m venv /venv

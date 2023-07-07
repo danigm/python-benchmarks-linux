@@ -5,7 +5,7 @@ ENV PYTHON_VERSION python3.11
 ENV PYTHON python3.11
 
 ENV PACKAGES="$PYTHON_VERSION $PYTHON_VERSION-pip $PYTHON_VERSION-devel"
-RUN zypper --non-interactive install --recommends devel_basis
+RUN zypper --non-interactive install --recommends -t pattern devel_basis
 RUN dnf -y install $PACKAGES
 
 RUN $PYTHON -m venv /venv
