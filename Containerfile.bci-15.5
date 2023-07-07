@@ -4,7 +4,8 @@ ENV IMAGE bci-15.5
 ENV PYTHON_VERSION python311
 ENV PYTHON python3.11
 
-ENV PACKAGES="$PYTHON_VERSION $PYTHON_VERSION-pip $PYTHON_VERSION-devel gcc"
+ENV PACKAGES="$PYTHON_VERSION $PYTHON_VERSION-pip $PYTHON_VERSION-devel"
+RUN zypper --non-interactive install --recommends devel_basis
 RUN zypper --non-interactive install --no-recommends $PACKAGES
 
 RUN $PYTHON -m venv /venv

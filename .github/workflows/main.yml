@@ -21,7 +21,7 @@ jobs:
       image: ${{ matrix.container }}
 
     steps:
-      - run: zypper -n install gcc
+      - run: zypper -n install --recommends devel_basis
       - run: zypper -n install python311 python311-pip python311-devel
         if: ${{ contains(matrix.container, 'suse') && matrix.python == '3.11' }}
       - run: zypper -n install python310 python310-pip python310-devel
