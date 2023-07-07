@@ -27,10 +27,10 @@ jobs:
       - run: zypper -n install python310 python310-pip python310-devel
         if: ${{ contains(matrix.container, 'suse') && matrix.python == '3.10' }}
       - run: python${{ matrix.python }} -m pip install pyperformance
-      - run: pyperformance run --python=/usr/bin/python${{ matrix.python }} -o ${{ matrix.container }}-${{ matrix.python }}.json -f
+      - run: pyperformance run --python=/usr/bin/python${{ matrix.python }} -o $(basename ${{ matrix.container }})-${{ matrix.python }}.json -f
 
       - name: Archive pyperformance results
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.container }}-${{ matrix.python }}
-          path: ${{ matrix.container }}-${{ matrix.python }}.json
+          name: $(basename ${{ matrix.container }})-${{ matrix.python }}
+          path: $(basename ${{ matrix.container }})-${{ matrix.python }}.json
