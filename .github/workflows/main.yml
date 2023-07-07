@@ -16,6 +16,7 @@ jobs:
             python: '3.11'
           - container: 'registry.suse.com/bci/bci-base:15.5'
             python: '3.11'
+      fail-fast: false
 
     container:
       image: ${{ matrix.container }}
