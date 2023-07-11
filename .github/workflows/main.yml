@@ -34,5 +34,5 @@ jobs:
       - name: Archive pyperformance results
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ matrix.container.name }}-${{ matrix.python }}.json
+          name: ${{ matrix.container.name }}-${{ matrix.container.python }}.json
           path: out.json
