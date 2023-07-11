@@ -4,7 +4,7 @@ ENV IMAGE ubuntu22.04
 ENV PYTHON_VERSION python3.11
 ENV PYTHON python3.11
 
-ENV PACKAGES="$PYTHON_VERSION python3-pip python3-venv $PYTHON_VERSION-dev"
+ENV PACKAGES="$PYTHON_VERSION python3-pip $PYTHON_VERSION-venv $PYTHON_VERSION-dev"
 RUN apt update -y
 RUN apt install -y build-essential
 RUN apt install -y $PACKAGES

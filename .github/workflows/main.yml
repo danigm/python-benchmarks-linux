@@ -7,36 +7,32 @@ jobs:
 
     strategy:
       matrix:
-        python: ['3.10']
         container:
-          - 'registry.suse.com/bci/bci-base:15.4'
-          - 'registry.opensuse.org/opensuse/tumbleweed:latest'
-        include:
-          - container: 'registry.opensuse.org/opensuse/tumbleweed:latest'
-            python: '3.11'
-          - container: 'registry.suse.com/bci/bci-base:15.5'
-            python: '3.11'
+          - {image: 'registry.suse.com/bci/bci-base:15.4', name: 'bci154', python: '3.10'}
+          - {image: 'registry.suse.com/bci/bci-base:15.5', name: 'bci155', python: '3.11'}
+          - {image: 'registry.opensuse.org/opensuse/tumbleweed:latest', name: 'tw', python: '3.10'}
+          - {image: 'registry.opensuse.org/opensuse/tumbleweed:latest', name: 'tw', python: '3.11'}
       fail-fast: false
 
     container:
-      image: ${{ matrix.container }}
+      image: ${{ matrix.container.image }}
 
     steps:
       - run: zypper --non-interactive install --recommends -t pattern devel_basis
       - run: zypper -n install python311 python311-pip python311-devel
-        if: ${{ contains(matrix.container, 'suse') && matrix.python == '3.11' }}
+        if: ${{ contains(matrix.container.image, 'suse') && matrix.container.python == '3.11' }}
       - run: zypper -n install python310 python310-pip python310-devel
-        if: ${{ contains(matrix.container, 'suse') && matrix.python == '3.10' }}
-      - run: python${{ matrix.python }} -m pip install pyperformance
+        if: ${{ contains(matrix.container.image, 'suse') && matrix.container.python == '3.10' }}
+      - run: python${{ matrix.container.python }} -m pip install pyperformance
       - run: |
           pyperformance run \
             --benchmarks=-sqlalchemy_imperative,-sqlalchemy_declarative \
-            --python=/usr/bin/python${{ matrix.python }} \
+            --python=/usr/bin/python${{ matrix.container.python }} \
             -o out.json \
             -f
 
       - name: Archive pyperformance results
         uses: actions/upload-artifact@v3
         with:
-          name: out.json
+          name: ${{ matrix.container.name }}-${{ matrix.python }}.json
           path: out.json
