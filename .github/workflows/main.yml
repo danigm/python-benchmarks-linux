@@ -41,7 +41,7 @@ jobs:
 
       - run: dnf -y group install "Development Tools"
         if: ${{ contains(matrix.container.image, 'rocky') }}
-      - run: dnf -y install install python3.11 python3.11-pip python3.11-devel
+      - run: dnf -y install python3.11 python3.11-pip python3.11-devel
         if: ${{ contains(matrix.container.image, 'rocky') && matrix.container.python == '3.11' }}
 
       - run: python${{ matrix.container.python }} -m pip install pyperformance
