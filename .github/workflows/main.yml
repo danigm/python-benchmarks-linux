@@ -12,6 +12,11 @@ jobs:
           - {image: 'registry.suse.com/bci/bci-base:15.5', name: 'bci155', python: '3.11'}
           - {image: 'registry.opensuse.org/opensuse/tumbleweed:latest', name: 'tw', python: '3.10'}
           - {image: 'registry.opensuse.org/opensuse/tumbleweed:latest', name: 'tw', python: '3.11'}
+          - {image: 'ubuntu:22.04', name: 'ubuntu2204', python: '3.10'}
+          - {image: 'ubuntu:22.04', name: 'ubuntu2204', python: '3.11'}
+          - {image: 'rockylinux:8', name: 'rocky8', python: '3.11'}
+          - {image: 'rockylinux:9', name: 'rocky9', python: '3.11'}
+
       fail-fast: false
 
     container:
@@ -19,10 +24,26 @@ jobs:
 
     steps:
       - run: zypper --non-interactive install --recommends -t pattern devel_basis
+        if: ${{ contains(matrix.container.image, 'suse') }}
       - run: zypper -n install python311 python311-pip python311-devel
         if: ${{ contains(matrix.container.image, 'suse') && matrix.container.python == '3.11' }}
       - run: zypper -n install python310 python310-pip python310-devel
         if: ${{ contains(matrix.container.image, 'suse') && matrix.container.python == '3.10' }}
+
+      - run: apt update -y
+        if: ${{ contains(matrix.container.image, 'ubuntu') }}
+      - run: apt install -y build-essential
+        if: ${{ contains(matrix.container.image, 'ubuntu') }}
+      - run: apt install -y python3.11 python3-pip python3.11-venv python3.11-dev
+        if: ${{ contains(matrix.container.image, 'ubuntu') && matrix.container.python == '3.11' }}
+      - run: apt install -y python3 python3-pip python3-venv python3-dev
+        if: ${{ contains(matrix.container.image, 'ubuntu') && matrix.container.python == '3.10' }}
+
+      - run: dnf group install "Development Tools"
+        if: ${{ contains(matrix.container.image, 'rocky') }}
+      - run: dnf -y install install python3.11 python3.11-pip python3.11-devel
+        if: ${{ contains(matrix.container.image, 'rocky') && matrix.container.python == '3.11' }}
+
       - run: python${{ matrix.container.python }} -m pip install pyperformance
       - run: |
           pyperformance run \
