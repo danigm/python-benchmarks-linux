@@ -50,7 +50,7 @@ jobs:
             --benchmarks=-sqlalchemy_imperative,-sqlalchemy_declarative \
             --python=/usr/bin/python${{ matrix.container.python }} \
             -o out.json \
-            -f
+            -r
 
       - name: Archive pyperformance results
         uses: actions/upload-artifact@v3
