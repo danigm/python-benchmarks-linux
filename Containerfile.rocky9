@@ -1,6 +1,6 @@
-FROM rockylinux:8
+FROM rockylinux:9
 
-ENV IMAGE rocky8
+ENV IMAGE rocky9
 ENV PYTHON_VERSION python3.11
 ENV PYTHON python3.11
 
